@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Mini E-Commerce</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header>
+    <h1>ShopNow</h1>
+    <p>Cart Items: <span id="cartCount">0</span></p>
+  </header>
+
+  <section>
+    <label for="filter">Filter by Category:</label>
+    <select id="filter" onchange="filterProducts()">
+      <option value="all">All</option>
+      <option value="clothing">Clothing</option>
+      <option value="electronics">Electronics</option>
+    </select>
+  </section>
+
+  <main id="productList"></main>
+
+  <script src="script.js"></script>
+</body>
+</html>const products = [
+  { name: "T-shirt", category: "clothing", price: 20 },
+  { name: "Headphones", category: "electronics", price: 50 },
+  { name: "Shoes", category: "clothing", price: 40 },
+  { name: "Mouse", category: "electronics", price: 25 }
+];
+
+let cart = [];
+
+function displayProducts(items) {
+  const container = document.getElementById("productList");
+  container.innerHTML = "";
+
+  items.forEach((p, index) => {
+    const div = document.createElement("div");
+    div.className = "product";
+    div.innerHTML = `
+      <h3>${p.name}</h3>
+      <p>Category: ${p.category}</p>
+      <p>Price: ₹${p.price}</p>
+      <button onclick="addToCart(${index})">Add to Cart</button>
+    `;
+    container.appendChild(div);
+  });
+}
+
+function filterProducts() {
+  const filterValue = document.getElementById("filter").value;
+  if (filterValue === "all") {
+    displayProducts(products);
+  } else {
+    const filtered = products.filter(p => p.category === filterValue);
+    displayProducts(filtered);
+  }
+}
+
+function addToCart(index) {
+  cart.push(products[index]);
+  document.getElementById("cartCount").innerText = cart.length;
+}
+
+window.onload = () => {
+  displayProducts(products);
+};
